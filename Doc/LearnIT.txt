@@ -1,0 +1,298 @@
+-- Create database
+CREATE DATABASE learning_platform;
+
+-- Switch to the new database
+USE learning_platform;
+
+-- Create users table
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
+    streak INT DEFAULT 0,
+    daily_goal_minutes INT DEFAULT 15,
+    progress_percentage DECIMAL(5, 2) DEFAULT 0.00
+);
+
+-- Create courses table
+CREATE TABLE courses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description TEXT
+);
+
+-- Create lessons table
+CREATE TABLE lessons (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id INT,
+    title VARCHAR(100),
+    content TEXT,
+    difficulty_level INT,
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+
+-- Create quizzes table
+CREATE TABLE quizzes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    lesson_id INT,
+    question TEXT,
+    option_a VARCHAR(100),
+    option_b VARCHAR(100),
+    option_c VARCHAR(100),
+    option_d VARCHAR(100),
+    correct_option CHAR(1),
+    FOREIGN KEY (lesson_id) REFERENCES lessons(id)
+);
+
+-- Create lesson_progress table
+CREATE TABLE lesson_progress (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    lesson_id INT NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (lesson_id) REFERENCES lessons(id),
+    UNIQUE (username, lesson_id)  -- Ensures a user can only have one progress record per lesson
+);
+
+
+
+
+
+INSERT INTO courses (name, description) VALUES 
+('German', 'Learn the basics and advanced aspects of German language and culture.'),
+('Japanese', 'Master Japanese language, culture, and conversation skills.'),
+('French', 'Understand and speak French with different levels of proficiency.'),
+('English', 'Enhance your English skills, covering everything from basics to advanced conversation.');
+
+German:
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(1, 'Culture in German', 
+'Willkommen in Deutschland! German culture is shaped by a long history, traditions, and regional diversity. Oktoberfest in Munich, for example, is a famous beer festival celebrated with traditional clothing like lederhosen and dirndls. Music lovers know Germany for composers such as Bach, Beethoven, and Brahms. 
+When visiting, you might encounter dishes like Bratwurst (sausage), Sauerkraut (fermented cabbage), and Pretzels. Language learners can immerse themselves by listening to German music or reading literature such as the works of Goethe.', 1);
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(1, 'Basic German', 
+'Basic German phrases can help you start conversations. Here are some examples:
+- "Hallo" (Hello)
+- "Guten Morgen" (Good morning)
+- "Guten Abend" (Good evening)
+- "Wie heißt du?" (What is your name?)
+- "Ich heiße..." (My name is...)
+- "Bitte" (Please)
+- "Danke" (Thank you)
+Numbers are also important to know: 
+1 - Eins, 2 - Zwei, 3 - Drei, 4 - Vier, 5 - Fünf. 
+Practice constructing sentences like: "Ich wohne in Berlin." (I live in Berlin.)', 2);
+
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(1, 'Intermediate German', 
+'In this lesson, you will learn about verb conjugations and useful tenses. 
+The present tense: 
+- Ich gehe (I go)
+- Du gehst (You go)
+The perfect tense: "Ich habe gegessen" (I have eaten).
+Articles in German (der, die, das) are important for nouns and their cases (nominative, accusative, dative, and genitive). 
+Example: "Der Mann gibt dem Kind einen Apfel." (The man gives the child an apple.)
+Work on sentence structures: "Ich lese ein Buch." (I am reading a book.)', 3);
+
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(1, 'Advanced German', 
+'This lesson covers complex grammar and idiomatic expressions. 
+- The subjunctive mood is used for hypothetical statements: "Wenn ich reich wäre, würde ich reisen." (If I were rich, I would travel.)
+- Learn separable verbs like "aufstehen" (to get up): "Ich stehe früh auf."
+- Practice with advanced vocabulary, such as words used in literature and business.
+Example idiom: "Das ist nicht mein Bier." (It\'s not my problem.)
+Also, deepen your understanding of German culture through poetry and prose.', 4);
+
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(1, 'German Conversation', 
+'Engage in real-life conversations to improve your fluency.
+Example dialogue:
+- "Woher kommen Sie?" (Where are you from?)
+- "Ich komme aus Deutschland." (I am from Germany.)
+- "Was machen Sie beruflich?" (What do you do for a living?)
+Focus on topics like travel, hobbies, and daily life. Practice using filler words like "also" (so), "genau" (exactly), and "doch" (but).',
+5);
+
+Japanese:
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(2, 'Culture in Japanese', 
+'日本へようこそ (Welcome to Japan)! Japan is a land of rich traditions and modern innovation. 
+Festivals like Hanami (cherry blossom viewing) celebrate nature, while Tanabata involves writing wishes on paper strips. 
+Japanese cuisine is known for sushi, tempura, and ramen. 
+Calligraphy (書道 - shodō) and tea ceremonies (茶道 - sadō) represent traditional arts. 
+Japan\'s unique etiquette, such as bowing and using polite speech (敬語 - keigo), reflects a deep respect for social harmony.', 1);
+
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(2, 'Basic Japanese', 
+'Learn to greet and introduce yourself in Japanese:
+- "こんにちは" (Konnichiwa - Hello)
+- "おはようございます" (Ohayou gozaimasu - Good morning)
+- "ありがとうございます" (Arigatou gozaimasu - Thank you)
+Introduce yourself: "私の名前は..." (Watashi no namae wa... - My name is...).
+Practice counting: 
+1 - 一 (ichi), 2 - 二 (ni), 3 - 三 (san). 
+Learn simple sentence structures: "私は学生です" (Watashi wa gakusei desu - I am a student).', 2);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(2, 'Intermediate Japanese', 
+'Focus on particles such as は (wa) for topics and を (wo) for objects. 
+Example: "私は本を読みます" (Watashi wa hon o yomimasu - I read a book). 
+Master conjugations:
+- Plain form: "行く" (iku - to go)
+- Past tense: "行った" (itta - went)
+Practice combining clauses: "雨が降っているので、外に出ません" (Ame ga futteiru node, soto ni demasen - Since it is raining, I won\'t go outside).', 3);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(2, 'Advanced Japanese', 
+'Delve into formal speech and keigo (敬語) for respectful interactions. 
+Example: "いらっしゃいますか" (Irasshaimasu ka - Is someone there?) for polite addressing.
+Complex kanji combinations and idioms are covered: 
+- "山を動かす" (Yama o ugokasu - To move mountains, meaning to achieve the impossible).
+Business etiquette and proper use of honorifics are key focuses in this advanced level.', 4);
+
+French:
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(3, 'Culture in French', 
+'Bienvenue en France! France is a country rich in history, art, and cuisine. The Louvre Museum in Paris houses iconic artworks such as the Mona Lisa. French cuisine is world-renowned for dishes like croissants, escargots, and coq au vin.
+French cinema is another cultural treasure, with directors like Jean-Luc Godard and François Truffaut. Festivals like Bastille Day (14 juillet) celebrate France\'s revolutionary history, while wine regions such as Bordeaux are famous worldwide. Learning the culture will enhance your understanding of the language.', 1);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(3, 'Basic French', 
+'Learn essential phrases for everyday interactions:
+- "Bonjour" (Good morning/Hello)
+- "Merci" (Thank you)
+- "S\'il vous plaît" (Please)
+- "Au revoir" (Goodbye)
+Practice self-introduction: "Je m\'appelle..." (My name is...)
+Numbers are crucial in French: 
+1 - Un, 2 - Deux, 3 - Trois, 4 - Quatre, 5 - Cinq.
+Learn basic questions such as: "Comment ça va?" (How are you?) and responses like: "Ça va bien" (I\'m fine).', 2);
+
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(3, 'Intermediate French', 
+'Understand French sentence structures with subjects, verbs, and objects. Learn verb conjugation in the present tense: 
+- "Je parle" (I speak)
+- "Tu parles" (You speak)
+Focus on the passé composé (past tense) for actions completed in the past:
+- "J\'ai mangé" (I ate)
+Practice with questions: "Où habites-tu?" (Where do you live?) and responses like "Je vis à Paris" (I live in Paris).', 3);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(3, 'Advanced French', 
+'Study the subjunctive mood, used to express doubt, desire, and emotion. Example: "Il faut que je parte." (I must leave.)
+Learn complex tenses like the future perfect: "J\'aurai fini" (I will have finished).
+Also, work on advanced vocabulary: idiomatic expressions like "Ça coûte les yeux de la tête" (It costs an arm and a leg). 
+Master the usage of reflexive verbs such as "se réveiller" (to wake up) and "se laver" (to wash oneself).', 4);
+
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(3, 'French Conversation', 
+'In this lesson, you will practice dialogues for real-world situations. Example conversation:
+- "Parlez-vous anglais?" (Do you speak English?)
+- "Oui, un peu." (Yes, a little.)
+Focus on fluency and comprehension by discussing topics like travel, work, and food. Practice answering questions like "Qu\'est-ce que vous aimez faire pendant votre temps libre?" (What do you like to do in your free time?).', 5);
+
+
+English:
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(4, 'Culture in English', 
+'Welcome! English-speaking countries span the globe, with unique traditions in the UK, USA, Canada, and Australia. 
+In the UK, you can experience historical landmarks like the Tower of London and Buckingham Palace. The USA is famous for its cultural diversity and significant holidays like Thanksgiving and Independence Day. 
+English literature is a treasure trove with works by Shakespeare, Mark Twain, and J.K. Rowling. Music, films, and sports are an essential part of the English-speaking world.', 1);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(4, 'Basic English', 
+'Learn essential phrases to greet and introduce yourself:
+- "Hello"
+- "How are you?"
+- "My name is..." 
+Numbers: 1 - One, 2 - Two, 3 - Three, 4 - Four, 5 - Five. 
+Useful expressions for daily life: "Where are you from?" "I am from the United States." 
+Practice simple questions and responses: "What is your favorite color?" "My favorite color is blue."', 2);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(4, 'Intermediate English', 
+'In this lesson, you will practice sentence structure and verb tenses. Focus on the past tense:
+- "I went" (Simple past)
+- "I was going" (Past continuous)
+Use modal verbs for ability and possibility: 
+- "I can speak English." 
+- "I could go if I had time."
+Learn how to ask for directions: "Can you tell me how to get to the station?"', 3);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(4, 'Advanced English', 
+'At an advanced level, you will work on complex sentence structures and vocabulary.
+Learn conditionals:
+- "If I had known, I would have come." (Third conditional)
+Expand your vocabulary with idiomatic phrases such as "It\'s a piece of cake" (It\'s easy), and "Break the ice" (Start a conversation). 
+Study phrasal verbs: "turn off," "pick up," "call off," and their usage in different contexts.', 4);
+
+
+INSERT INTO lessons (course_id, title, content, difficulty_level) VALUES 
+(4, 'English Conversation', 
+'Practice speaking in everyday situations:
+Example dialogue:
+- "What do you do for a living?" 
+- "I am a teacher."
+Focus on casual and formal conversations about travel, work, hobbies, and social life.
+Discuss topics like favorite foods, travel experiences, and current events. 
+Learn how to express opinions: "I think that...," "In my opinion..."', 5);
+
+
+quiz
+
+-- For German quizzes (lesson_id = 5 corresponds to German Conversation lesson)
+INSERT INTO quizzes (lesson_id, question, option_a, option_b, option_c, option_d, correct_option) VALUES
+(5, 'What is the capital of Germany?', 'Berlin', 'Munich', 'Hamburg', 'Cologne', 'A'),
+(5, 'Translate "Hello" to German.', 'Hallo', 'Bonjour', 'Hola', 'Ciao', 'A'),
+(5, 'What is the German word for "Thank you"?', 'Danke', 'Merci', 'Gracias', 'Grazie', 'A'),
+(5, 'What does "Guten Tag" mean?', 'Good Day', 'Good Night', 'Good Morning', 'Hello', 'A'),
+(5, 'Which of these is a German dish?', 'Sushi', 'Pasta', 'Sauerbraten', 'Croissant', 'C');
+
+-- For Japanese quizzes (lesson_id = 10 corresponds to Japanese Conversation lesson)
+INSERT INTO quizzes (lesson_id, question, option_a, option_b, option_c, option_d, correct_option) VALUES
+(10, 'What is the Japanese word for "Good morning"?', 'Konnichiwa', 'Ohayou', 'Sayounara', 'Arigatou', 'B'),
+(10, 'Which of these is a Japanese script?', 'Hiragana', 'Cyrillic', 'Latin', 'Arabic', 'A'),
+(10, 'What is the capital of Japan?', 'Tokyo', 'Osaka', 'Kyoto', 'Hiroshima', 'A'),
+(10, 'How do you say "Thank you" in Japanese?', 'Merci', 'Gracias', 'Arigatou', 'Danke', 'C'),
+(10, 'Which of these is a Japanese food?', 'Baguette', 'Pizza', 'Sushi', 'Currywurst', 'C');
+
+-- For French quizzes (lesson_id = 15 corresponds to French Conversation lesson)
+INSERT INTO quizzes (lesson_id, question, option_a, option_b, option_c, option_d, correct_option) VALUES
+(15, 'What is the French word for "Hello"?', 'Bonjour', 'Hola', 'Hallo', 'Ciao', 'A'),
+(15, 'Which of these is a French city?', 'Berlin', 'London', 'Paris', 'Madrid', 'C'),
+(15, 'How do you say "Thank you" in French?', 'Danke', 'Merci', 'Grazie', 'Arigatou', 'B'),
+(15, 'What is "Oui" in English?', 'No', 'Hello', 'Yes', 'Maybe', 'C'),
+(15, 'Which of these is a French dessert?', 'Tiramisu', 'Croissant', 'Apple Pie', 'Churro', 'B');
+
+-- For English quizzes (lesson_id = 20 corresponds to English Conversation lesson)
+INSERT INTO quizzes (lesson_id, question, option_a, option_b, option_c, option_d, correct_option) VALUES
+(20, 'What is the past tense of "run"?', 'Ran', 'Run', 'Running', 'Runned', 'A'),
+(20, 'Which is a synonym of "happy"?', 'Sad', 'Angry', 'Joyful', 'Tired', 'C'),
+(20, 'How do you spell "accommodate"?', 'Acommodate', 'Accomodate', 'Accommodate', 'Acommodate', 'C'),
+(20, 'Which is a vowel?', 'B', 'C', 'E', 'D', 'C'),
+(20, 'What is the plural of "child"?', 'Childs', 'Child', 'Children', 'Childrens', 'C');
